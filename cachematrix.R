@@ -1,15 +1,55 @@
-## Put comments here that give an overall description of what your
-## functions do
+## The pair of functions below will allow for the inverse of a square matrix
+## to be calculated. Once calculated, the inverse can be cached and called up
+## subsequently.
 
-## Write a short comment describing this function
-sfsdfasdfdsfasd
+
+## This first function creates a special "matrix" object 
+## that can cache its inverse.
+
 makeCacheMatrix <- function(x = matrix()) {
-
+   
+        inv <- NULL             #This initalises inv for subsequent storage of matrix inverse
+        set <- function(y) {
+            x <<- y             #Assigns the matrix, "x", entered by user into the function
+            inv <<- NULL        #cached inverse of matirx is made NULL by default
+        }
+        get <- function() x     #returns the original matrix entered by user
+        setinv <- function(newmatrix) inv <<- newmatrix   #Replaces cached matrix with a new one set by user
+        getinv <- function() inv      #Retreives the cached inverse of matrix
+        list(set = set, get = get,
+             setinv = setinv,
+             getinv = getinv)
+        
+        ##The list function above produces a list with the below 4 elements:
+        ##set will set the value of the matrix
+        ##get will get the value of the matrix
+        ##setinv will allow the user to input a new cached value for the inverse of the matrix
+        ##getinv retrieves the cached inverse of the matrix 
+    
 }
 
 
-## Write a short comment describing this function
+## This second function computes the inverse of the special "matrix" 
+## returned by makeCacheMatrix above. If the inverse has already been 
+## calculated (and the matrix has not changed), then the cachesolve function
+## should retrieve the inverse from the cache.
 
 cacheSolve <- function(x, ...) {
+       
+    inv <- x$getinv()     #Assigns value of getinv from above function to a local object - inv
+    if(!is.null(inv)) {
+        message("getting cached data")
+        return(inv)       #If there is already a cached matrix inverse, it will be returned
+    }
+    data <- x$get()       #If there is no cached matrix inverse, assigns original matrix "x" to object "data" 
+    inv <- solve(data, ...) #Calcuates the inverse of the matrix "x"
+    x$setinv(inv)
+    return(inv)                   #Returns calculated value of matrix "x"
+    
+    
+    
+    
+    
+    
         ## Return a matrix that is the inverse of 'x'
 }
